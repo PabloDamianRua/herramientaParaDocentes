@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de alumnos </title>
+</head>
+<body>
+
+<div id="enca">
+    <label for="">Seleccionar marteria:  </label>
+    <select name="materia" onchange="recargarChecks(this.value)">
+        <option value="PDL">Selecionar</option>
+        <option value="PDL">Lengua</option>
+        <option value="SOC">Sociales</option>
+        <option value="CAT">Catequesis</option>
+        </select>
+</div>
+    <div id="Contenedor"></div>
+    
+   <button id="copiar" onclick="copiarTexto()">Copiar</button>
+   
+   <br><textarea name="" id="txt" cols="50" rows="20"></textarea> 
+</body>
+</html>
+
+<script type="text/javascript">
+
+function generarTexto()
+{
+    var texto ="";
+    var obj = document.getElementById("txt");
+    for (var i=0;i<document.getElementsByTagName("input").length;i++)
+    {
+        if(document.getElementsByTagName("input")[i].checked)
+            texto = texto.trim()  + document.getElementsByTagName("input")[i].value + ". ";
+    }
+    obj.innerText = texto;
+    this.copiarAlPortapapeles("txt");
+}
+
+function copiarTexto()
+{
+    this.copiarAlPortapapeles("txt");
+    this.generarChecks();
+}
+
+function copiarAlPortapapeles(id_elemento) {
+  
+    var aux = document.createElement("input");
+    aux.setAttribute("value", document.getElementById(id_elemento).value);
+    document.body.appendChild(aux);
+    aux.select();
+    document.execCommand("copy");
+    document.body.removeChild(aux);
+}
+
+function generarChecksDeTexto(texto)
+{
+
+var list = document.getElementsByClassName("chk");
+for(var i = list.length - 1; 0 <= i; i--)
+if(list[i] && list[i].parentElement)
+list[i].parentElement.removeChild(list[i]);
+
+    var lista = texto.replace(/(\r\n|\n|\r)/gm, "").split(".");
+    for(let linea of lista)
+    {
+        if(linea!== "")
+        generarCheck(linea);
+    }
+}
+
+function generarCheck(texto){
+    
+    var cbh = document.getElementById('Contenedor');
+    var cb = document.createElement('input');    
+    
+    cb.type = 'checkbox';
+
+    cb.onclick =generarTexto;
+    cb.value = texto;
+    cb.className ="chk";
+
+    var label = document.createElement('label')
+    label.htmlFor = "id";
+    label.className ="chk";
+    label.appendChild(document.createTextNode(texto));
+
+    cbh.appendChild(cb);
+    cbh.appendChild(label);
+    var enter = document.createElement('br');
+    enter.className ='chk';
+    cbh.appendChild(enter);
+}
+
+function recargarChecks(opcion)
+{
+
+if(opcion === "PDL")
+    generarChecksDeTexto(Lengua);
+if(opcion === "SOC")
+    generarChecksDeTexto(Sociales);
+if(opcion === "CAT")
+    generarChecksDeTexto(Catequesis);
+}
+const Lengua =`
+Hola mundo 1.
+Hola mundo 2.
+Hola mundo 3.
+`;
+const Sociales =`
+Hola mundo 4.
+Hola mundo 5.
+Hola mundo 6.
+Hola mundo 7.
+Hola mundo 8.
+`;
+
+const Catequesis =`
+Hola mundo 4.
+Hola mundo 5.
+Hola mundo 6.
+Hola mundo 7.
+Hola mundo 8.
+`;
+
+
+</script>
